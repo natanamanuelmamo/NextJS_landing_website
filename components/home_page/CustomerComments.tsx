@@ -40,17 +40,51 @@ const customers = [
   },
 ];
 
+// Framer motion variants for modular animations
+const cardVariants = {
+  initial: { opacity: 0, scale: 0.95 },
+  animate: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: "easeOut" } },
+};
+
+const textVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 0.2 } },
+};
+
+const starsVariants = {
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0, transition: { staggerChildren: 0.1, delayChildren: 0.3 } },
+};
+
+const starChildVariants = {
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+};
+
+const imageVariants = {
+  initial: { opacity: 0, scale: 0.8 },
+  animate: { opacity: 1, scale: 1, transition: { duration: 0.7, delay: 0.4 } },
+};
+
 const CustomerComments = () => {
   return (
-    <section className="w-full py-16 md:px-24 bg-green-50">
-      <div className="text-center mb-14">
+    <section className="w-full py-16 md:px-24 bg-green-50 overflow-hidden">
+      {/* Section Header */}
+      <motion.div
+        className="text-center mb-14"
+        initial={{ opacity: 0, y: -30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: false }}
+      >
         <h2 className="text-3xl md:text-5xl font-bold text-green-700 leading-tight">
           What Our Beloved Customers
           <br />
           Say About Us
         </h2>
-      </div>
+      </motion.div>
 
+      {/* Swiper */}
       <Swiper
         modules={[Autoplay, Pagination, Navigation]}
         autoplay={{ delay: 5000 }}
@@ -62,39 +96,61 @@ const CustomerComments = () => {
         {customers.map((cust, index) => (
           <SwiperSlide key={index}>
             <motion.div
-              whileHover={{ scale: 1.02 }}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.1 }}
-              viewport={{ once: true }}
               className="bg-white rounded-3xl p-10 shadow-lg mx-auto max-w-4xl text-center flex flex-col items-center space-y-6"
+              variants={cardVariants}
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: false, amount: 0.6 }} // trigger when 60% visible
             >
-              <p className="text-gray-700 italic text-lg md:text-xl max-w-2xl">
+              {/* Comment text */}
+              <motion.p
+                className="text-gray-700 italic text-lg md:text-xl max-w-2xl"
+                variants={textVariants}
+              >
                 “{cust.comment}”
-              </p>
+              </motion.p>
 
-              <div className="flex justify-center mb-2">
+              {/* Stars */}
+              <motion.div
+                className="flex justify-center mb-2"
+                variants={starsVariants}
+                initial="initial"
+                animate="animate"
+              >
                 {Array(5)
                   .fill(0)
                   .map((_, i) => (
-                    <span key={i} className="text-yellow-400 text-5xl">★</span>
+                    <motion.span
+                      key={i}
+                      className="text-yellow-400 text-5xl"
+                      variants={starChildVariants}
+                    >
+                      ★
+                    </motion.span>
                   ))}
-              </div>
+              </motion.div>
 
-              <Image
-                src={cust.image}
-                alt={cust.name}
-                width={200}
-                height={200}
-                className="rounded-full border-4 border-green-300"
-              />
+              {/* Customer Image */}
+              <motion.div variants={imageVariants}>
+                <Image
+                  src={cust.image}
+                  alt={cust.name}
+                  width={200}
+                  height={200}
+                  className="rounded-full border-4 border-green-300"
+                />
+              </motion.div>
 
-              <div>
+              {/* Name + City */}
+              <motion.div
+                className="flex flex-col items-center"
+                variants={textVariants}
+              >
                 <h4 className="font-semibold text-xl text-green-800">
                   {cust.name}
                 </h4>
                 <p className="text-gray-500">{cust.city}</p>
-              </div>
+              </motion.div>
             </motion.div>
           </SwiperSlide>
         ))}
@@ -104,12 +160,3 @@ const CustomerComments = () => {
 };
 
 export default CustomerComments;
-
-
-
-
-
-
-
-
-

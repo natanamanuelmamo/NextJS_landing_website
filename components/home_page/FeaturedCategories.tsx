@@ -1,107 +1,9 @@
-// "use client";
-
-// import React, { useRef } from "react";
-// import Image from "next/image";
-// import { ChevronLeft, ChevronRight, ShoppingBag } from "lucide-react";
-
-// const categories = [
-//   { name: "Fruits & Vegetables", image: "/category1.png" },
-//   { name: "Dairy Products", image: "/category2.png" },
-//   { name: "Bakery & Pastries", image: "/category3.png" },
-//   { name: "Meat & Seafood", image: "/category4.png" },
-//   { name: "Beverages", image: "/category5.png" },
-// ];
-
-// // Duplicate for scrolling effect
-// const duplicatedCategories = [...categories, ...categories];
-
-// const FeaturedCategories = () => {
-//   const scrollRef = useRef<HTMLDivElement>(null);
-
-//   const scroll = (direction: "left" | "right") => {
-//     if (scrollRef.current) {
-//       const { scrollLeft, clientWidth } = scrollRef.current;
-//       const scrollAmount = clientWidth * 0.4;
-
-//       scrollRef.current.scrollTo({
-//         left: direction === "left" ? scrollLeft - scrollAmount : scrollLeft + scrollAmount,
-//         behavior: "smooth",
-//       });
-//     }
-//   };
-
-//   return (
-//     <section className="py-12 bg-[#f0ffec]">
-//       <div className="container mx-auto px-4">
-//         {/* Header with icon */}
-//         <div className="flex items-center justify-between mb-8">
-//           <h2 className="text-5xl font-bold text-green-700">Featured Categories</h2>
-//           <ShoppingBag size={54} className="text-green-700" />
-//         </div>
-
-//         {/* Category Carousel */}
-//         <div className="relative">
-//           {/* Arrows */}
-//           <button
-//             onClick={() => scroll("left")}
-//             className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white p-2 rounded-full shadow-md hover:bg-green-100"
-//           >
-//             <ChevronLeft />
-//           </button>
-
-//           <div
-//             ref={scrollRef}
-//             className="flex overflow-x-auto gap-6 no-scrollbar scroll-smooth px-10"
-//           >
-//             {duplicatedCategories.map((category, index) => (
-//               <div
-//                 key={index}
-//                 className="flex-shrink-0 flex flex-col items-center w-80"
-//               >
-//                 <div className="w-64 h-64 bg-white rounded-full flex items-center justify-center shadow-md mb-3">
-//                   <Image
-//                     src={category.image}
-//                     alt={category.name}
-//                     width={160}
-//                     height={160}
-//                     className="object-contain"
-//                   />
-//                 </div>
-//                 <p className="text-center text-md font-medium text-[#1f1f1f]">
-//                   {category.name}
-//                 </p>
-//               </div>
-//             ))}
-//           </div>
-
-//           <button
-//             onClick={() => scroll("right")}
-//             className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white p-2 rounded-full shadow-md hover:bg-green-100"
-//           >
-//             <ChevronRight />
-//           </button>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default FeaturedCategories;
-
-
-
-
-
-
-
-
-
-
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, ShoppingBag } from "lucide-react";
+import { motion } from "framer-motion";
 
 const categories = [
   { name: "Fruits & Vegetables", image: "/category1.png" },
@@ -156,8 +58,23 @@ const FeaturedCategories = () => {
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="flex items-center justify-center gap-2 mb-8">
-          <h2 className="text-5xl font-bold text-green-700">Featured Categories</h2>
-          <ShoppingBag size={54} className="text-green-700" />
+          <motion.h2
+            className="text-5xl font-bold text-green-700"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: false }}
+          >
+            Featured Categories
+          </motion.h2>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            viewport={{ once: false }}
+          >
+            <ShoppingBag size={54} className="text-green-700" />
+          </motion.div>
         </div>
 
         <div className="relative">
@@ -175,11 +92,19 @@ const FeaturedCategories = () => {
             className="flex overflow-x-auto gap-6 no-scrollbar scroll-smooth px-10"
           >
             {duplicatedCategories.map((category, index) => (
-              <div
+              <motion.div
                 key={index}
-                className="flex-shrink-0 flex flex-col items-center w-80"
+                className="flex-shrink-0 flex flex-col items-center w-80 cursor-pointer"
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: false }}
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0px 8px 20px rgba(0, 128, 0, 0.2)",
+                }}
               >
-                <div className="w-64 h-64 bg-white rounded-full flex items-center justify-center shadow-md mb-3">
+                <div className="w-64 h-64 bg-white rounded-full flex items-center justify-center shadow-md mb-3 transition-transform">
                   <Image
                     src={category.image}
                     alt={category.name}
@@ -191,7 +116,7 @@ const FeaturedCategories = () => {
                 <p className="text-center text-md font-bold text-[#1f1f1f]">
                   {category.name}
                 </p>
-              </div>
+              </motion.div>
             ))}
           </div>
 
@@ -222,18 +147,3 @@ const FeaturedCategories = () => {
 };
 
 export default FeaturedCategories;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
