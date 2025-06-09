@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { FaStar, FaPlus } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
 import classNames from "classnames";
+import { motion } from "framer-motion";
 
 const products = Array(4).fill([
   {
@@ -72,8 +73,23 @@ export const FeaturedProducts = () => {
     <section className="py-12 px-4 bg-green-50">
       {/* Header */}
       <div className="flex items-center justify-center gap-2 mb-8">
-        <h2 className="text-5xl font-bold text-green-700">Featured Products</h2>
-        <FaCartShopping className="text-green-600 text-5xl" />
+        <motion.h2
+          className="text-5xl font-bold text-green-700"
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: false }}
+        >
+          Featured Products
+        </motion.h2>
+        <motion.div
+          initial={{ opacity: 0, rotate: -45 }}
+          whileInView={{ opacity: 1, rotate: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          viewport={{ once: false }}
+        >
+          <FaCartShopping className="text-green-600 text-5xl" />
+        </motion.div>
       </div>
 
       {/* Carousel */}
@@ -89,9 +105,21 @@ export const FeaturedProducts = () => {
               style={{ width: "100%" }}
             >
               {group.map((product, i) => (
-                <div
+                <motion.div
                   key={i}
-                  className="w-[200px] bg-white rounded-xl p-4 shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1 animate-fade-in"
+                  className="w-[200px] bg-white rounded-xl p-4 shadow-md transition-transform cursor-pointer"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{
+                    duration: 0.6,
+                    delay: i * 0.1, // Stagger effect
+                  }}
+                  viewport={{ once: false }}
+                  whileHover={{
+                    scale: 1.05,
+                    rotate: 1.5, // Slight rotate for "fun" effect
+                    boxShadow: "0px 8px 20px rgba(0, 128, 0, 0.2)",
+                  }}
                 >
                   <div className="relative bg-white rounded-lg p-3">
                     <div className="rounded-lg overflow-hidden">
@@ -120,7 +148,7 @@ export const FeaturedProducts = () => {
                   <button className="mt-2 w-full bg-green-600 text-white py-1 rounded hover:bg-green-700 transition">
                     Buy Now
                   </button>
-                </div>
+                </motion.div>
               ))}
             </div>
           ))}
@@ -148,11 +176,3 @@ export const FeaturedProducts = () => {
 };
 
 export default FeaturedProducts;
-
-
-
-
-
-
-
-
