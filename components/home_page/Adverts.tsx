@@ -94,7 +94,7 @@ const ParallaxCard = ({ children }: { children: React.ReactNode }) => {
 
 const Adverts = () => {
   return (
-    <section className="py-10 relative min-h-screen w-screen bg-green-50">
+    <section className="py-10 relative min-h-screen w-screen">
       <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-6">
         {adverts.map((advert, i) => (
           <motion.div
